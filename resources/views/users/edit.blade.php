@@ -20,17 +20,6 @@
                             <input type="text" name="email" class="form-control" value="{{ $user->email }}">
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password">Password</label>
-                            <div class="input-group input-group-merge">
-                                <input type="password" name="password" id="password" class="form-control" value="{{ $user->password }}">
-                                <div class="input-group-append" data-password="false">
-                                    <div class="input-group-text">
-                                        <span class="password-eye"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
                             <label>Birthday</label>
                             <input type="date" name="birthday" class="form-control" value="{{ $user->date }}">
                         </div>

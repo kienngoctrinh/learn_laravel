@@ -28,7 +28,7 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->code }}</td>
                         <td class="table-user">
-                            <img src="{{ $user->avatar }}" alt="table-user" class="mr-2 rounded-circle">
+                            <img src="{{ asset('avatars/' . $user->avatar) }}" alt="table-user" class="mr-2 rounded-circle">
                             {{ $user->name }}
                         </td>
                         <td>{{ $user->email }}</td>
@@ -37,8 +37,13 @@
                         <td>{{ $user->gender }}</td>
                         <td>{{ $user->created_at }}</td>
                         <td>{{ $user->updated_at }}</td>
-                        <td>
+                        <td class="table-action">
                             <a href="{{ route('users.edit', $user) }}" class="action-icon"><i class="mdi mdi-pencil"></i></a>
+                            <form action="{{ route('users.destroy', $user) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="action-icon border-0"><i class="mdi mdi-delete"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

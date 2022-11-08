@@ -47,16 +47,15 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'password' => [
-                'filled',
-                'required',
-                'string',
-                'min:6',
-                'max:255',
-            ],
             'role' => [
                 'filled',
                 'required',
+            ],
+            'avatar' => [
+                'filled',
+                'required',
+                'image',
+                'max:2048',
             ],
         ];
     }

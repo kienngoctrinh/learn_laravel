@@ -9,7 +9,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'code'              => $this->faker->unique()->regexify('[A-Z0-9]{10}'),
+            'code'              => $this->faker->unique()->regexify('[A-Z0-9]{5}'),
             'email'             => $this->faker->unique()->email,
             'name'              => $this->faker->name,
             'password'          => $this->faker->password,

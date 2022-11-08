@@ -14,21 +14,21 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => [
+            'code'     => [
                 'filled',
                 'required',
                 'string',
                 'max:255',
                 'unique:App\Models\User,code',
             ],
-            'email' => [
+            'email'    => [
                 'filled',
                 'required',
                 'email',
                 'max:255',
                 'unique:App\Models\User,email',
             ],
-            'name' => [
+            'name'     => [
                 'filled',
                 'required',
                 'string',
@@ -40,7 +40,7 @@ class StoreRequest extends FormRequest
                 'date',
                 'before:today',
             ],
-            'gender' => [
+            'gender'   => [
                 'filled',
                 'required',
                 'string',
@@ -52,9 +52,15 @@ class StoreRequest extends FormRequest
                 'min:6',
                 'max:255',
             ],
-            'role' => [
+            'role'     => [
                 'filled',
                 'required',
+            ],
+            'avatar'   => [
+                'filled',
+                'required',
+                'image',
+                'max:2048',
             ],
         ];
     }

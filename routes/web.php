@@ -16,4 +16,5 @@ Route::group([
     Route::post('/store', [UserController::class, 'store'])->name('store');
     Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
     Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
+    Route::delete('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
 });

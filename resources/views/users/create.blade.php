@@ -41,7 +41,7 @@
                         <div class="form-group mb-3">
                             <label>Role</label>
                             <select name="role" class="form-control">
-                                <option disabled selected>Choose role</option>
+                                <option hidden>Choose role</option>
                                 @foreach($roles as $role => $value)
                                     <option
                                             value="{{ $value }}"

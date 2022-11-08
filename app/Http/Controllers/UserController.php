@@ -46,13 +46,25 @@ class UserController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->model->create($request->validated());
+        DB::beginTransaction();
+        try {
+            $arr = $request->validated();
+            $arr['password'] = Hash::make($arr['password']);
 
-        $fileExtension = $request->file('avatar')->extension();
-        $fileName      = uniqid() . time() . '.' . $fileExtension;
-        $request->file('avatar')->storeAs('public/avatars', $fileName);
+            $imageName = uniqid() . time() . '.' . $request->avatar->extension();
+            $request->avatar->move(public_path('avatars'), $imageName);
+            $arr['avatar'] = $imageName;
 
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+            $this->model->create($arr);
+
+            DB::commit();
+
+            return redirect()->route('users.index')->with('success', 'User created successfully');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     public function edit(User $user)
@@ -64,15 +76,35 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, $userId)
     {
-        $object = $this->model->find($userId);
-        $object->fill($request->validated());
-        $object->save();
+        DB::beginTransaction();
+        try {
+            $arr = $request->validated();
+            $arr['password'] = Hash::make($arr['password']);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+            $user = $this->model->findOrFail($userId);
+
+            if ($request->hasFile('avatar')) {
+                $imageName = uniqid() . time() . '.' . $request->avatar->extension();
+                $request->avatar->move(public_path('avatars'), $imageName);
+                $arr['avatar'] = $imageName;
+            }
+
+            $user->update($arr);
+
+            DB::commit();
+
+            return redirect()->route('users.index')->with('success', 'User updated successfully');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('birthday');
             $table->string('avatar')->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 
