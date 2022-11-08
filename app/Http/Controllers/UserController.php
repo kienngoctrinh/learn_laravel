@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRoleEnum;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -18,11 +20,14 @@ class UserController extends Controller
         $this->model = User::query();
 
         $routeName = Route::currentRouteName();
-        $arr = explode('.', $routeName);
-        $arr = array_map('ucwords', $arr);
-        $title = implode(' - ', $arr);
+        $arr       = explode('.', $routeName);
+        $arr       = array_map('ucwords', $arr);
+        $title     = implode(' - ', $arr);
+
+        $roles = UserRoleEnum::getArrayView();
 
         View::share('title', $title);
+        View::share('roles', $roles);
     }
 
     public function index()
@@ -41,24 +46,13 @@ class UserController extends Controller
 
     public function store(StoreRequest $request)
     {
-        DB::beginTransaction();
-        try {
-            $arr = $request->validated();
+        $this->model->create($request->validated());
 
-            $email = $request->get('email');
+        $fileExtension = $request->file('avatar')->extension();
+        $fileName      = uniqid() . time() . '.' . $fileExtension;
+        $request->file('avatar')->storeAs('public/avatars', $fileName);
 
-            if (!empty($email)) {
-                $arr['email'] = $email;
-            }
-
-            User::create($arr);
-
-            DB::commit();
-            return redirect()->route('users.index')->with('success', 'User created successfully.');
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', $e->getMessage());
-        }
+        return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
     public function edit(User $user)
@@ -70,25 +64,11 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, $userId)
     {
-        DB::beginTransaction();
-        try {
-            $arr = $request->validated();
+        $object = $this->model->find($userId);
+        $object->fill($request->validated());
+        $object->save();
 
-            $email = $request->get('email');
-
-            if (!empty($email)) {
-                $arr['email'] = $email;
-            }
-
-            $user = $this->model->findOrFail($userId);
-            $user->update($arr);
-
-            DB::commit();
-            return redirect()->route('users.index')->with('success', 'User updated successfully.');
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', $e->getMessage());
-        }
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     public function destroy(User $user)

@@ -9,21 +9,24 @@ class User extends Model
 {
     use HasFactory;
 
-    public function getGenderNameAttribute()
-    {
-        return ($this->gender === 0) ? 'Female' : 'Male';
-    }
-
     public function getAgeAttribute()
     {
         return date_diff(date_create($this->birthday), date_create())->y;
     }
 
+    public function getDateAttribute()
+    {
+        return date('Y-m-d', strtotime($this->birthday));
+    }
+
     protected $fillable = [
+        'code',
         'email',
         'name',
         'birthday',
         'gender',
-        'programming_language',
+        'password',
+        'role',
+        'avatar',
     ];
 }

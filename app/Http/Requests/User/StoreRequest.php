@@ -14,6 +14,13 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'code' => [
+                'filled',
+                'required',
+                'string',
+                'max:255',
+                'unique:App\Models\User,code',
+            ],
             'email' => [
                 'filled',
                 'required',
@@ -36,13 +43,18 @@ class StoreRequest extends FormRequest
             'gender' => [
                 'filled',
                 'required',
-                'boolean',
+                'string',
             ],
-            'programming_language' => [
+            'password' => [
                 'filled',
                 'required',
                 'string',
+                'min:6',
                 'max:255',
+            ],
+            'role' => [
+                'filled',
+                'required',
             ],
         ];
     }
