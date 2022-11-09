@@ -57,8 +57,6 @@ class StoreRequest extends FormRequest
                 'required',
             ],
             'avatar'   => [
-                'filled',
-                'required',
                 'image',
                 'max:2048',
             ],

@@ -51,9 +51,15 @@ class UserController extends Controller
             $arr = $request->validated();
             $arr['password'] = Hash::make($arr['password']);
 
-            $imageName = uniqid() . time() . '.' . $request->avatar->extension();
-            $request->avatar->move(public_path('avatars'), $imageName);
-            $arr['avatar'] = $imageName;
+            if (!$request->hasFile('avatar')) {
+                $arr['avatar'] = 'default.png';
+            }
+
+            if ($request->hasFile('avatar')) {
+                $imageName = uniqid() . time() . '.' . $request->avatar->extension();
+                $request->avatar->move(public_path('avatars'), $imageName);
+                $arr['avatar'] = $imageName;
+            }
 
             $this->model->create($arr);
 
@@ -79,9 +85,12 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $arr = $request->validated();
-            $arr['password'] = Hash::make($arr['password']);
 
             $user = $this->model->findOrFail($userId);
+
+            if (!$request->hasFile('avatar')) {
+                $arr['avatar'] = 'default.png';
+            }
 
             if ($request->hasFile('avatar')) {
                 $imageName = uniqid() . time() . '.' . $request->avatar->extension();

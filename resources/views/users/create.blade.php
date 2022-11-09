@@ -35,8 +35,10 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Gender: </label>
-                            <label><input type="radio" name="gender" value="Male" checked @if(old('gender') == 'Male') checked @endif>Male</label>
-                            <label><input type="radio" name="gender" value="Female" @if(old('gender') == 'Female') checked @endif>Female</label>
+                            <label><input type="radio" name="gender" value="Male" checked
+                                          @if(old('gender') == 'Male') checked @endif>Male</label>
+                            <label><input type="radio" name="gender" value="Female"
+                                          @if(old('gender') == 'Female') checked @endif>Female</label>
                         </div>
                         <div class="form-group mb-3">
                             <label>Role</label>
@@ -58,6 +60,10 @@
                             <label for="example-fileinput">Avatar</label>
                             <input type="file" name="avatar" id="example-fileinput" class="form-control-file">
                         </div>
+                        <div class="form-group mb-3">
+                            <img style="object-fit: cover" src="{{ asset('avatars/default.png') }}" id="image-preview" class="avatar-xl rounded-circle">
+                            <i id="image-remove" class="dripicons-cross"></i>
+                        </div>
                         <button class="btn btn-primary">Create</button>
                     </form>
                 </div>
@@ -65,3 +71,21 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function () {
+            $('#example-fileinput').change(function () {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    $('#image-preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
+        $('#image-remove').click(function (e) {
+            e.preventDefault();
+            $('#image-preview').attr('src', '{{ asset('avatars/default.png') }}');
+            $('#example-fileinput').val('');
+        });
+    </script>
+@endpush

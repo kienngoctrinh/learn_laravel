@@ -32,6 +32,13 @@
                                     </a>
                                 </li>
 
+                                <li class="side-nav-item">
+                                    <a href="{{ route('scores.index') }}" class="side-nav-link" aria-expanded="false">
+                                        <i class="uil-home-alt"></i>
+                                        <span> Scores </span>
+                                    </a>
+                                </li>
+
                             </ul>
 
                             <!-- Help Box -->

@@ -52,8 +52,6 @@ class UpdateRequest extends FormRequest
                 'required',
             ],
             'avatar' => [
-                'filled',
-                'required',
                 'image',
                 'max:2048',
             ],

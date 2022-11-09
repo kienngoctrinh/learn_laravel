@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('users.update', $user) }}" method="post">
+                    <form action="{{ route('users.update', $user) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group mb-3">
@@ -42,6 +42,14 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="example-fileinput">Avatar</label>
+                            <input type="file" name="avatar" id="example-fileinput" class="form-control-file">
+                        </div>
+                        <div class="form-group mb-3">
+                            <img style="object-fit: cover" src="{{ asset('avatars/' . $user->avatar) }}" id="image-preview" class="avatar-xl rounded-circle">
+                            <i id="image-remove" class="dripicons-cross"></i>
+                        </div>
                         <button class="btn btn-primary">Update</button>
                     </form>
                 </div>
@@ -49,3 +57,21 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function () {
+            $('#example-fileinput').change(function () {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    $('#image-preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
+        $('#image-remove').click(function (e) {
+            e.preventDefault();
+            $('#image-preview').attr('src', '{{ asset('avatars/default.png') }}');
+            $('#example-fileinput').val('');
+        });
+    </script>
+@endpush

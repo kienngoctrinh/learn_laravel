@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('course_code');
             $table->float('point');
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 

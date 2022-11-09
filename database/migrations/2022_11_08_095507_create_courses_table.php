@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 
