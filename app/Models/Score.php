@@ -9,6 +9,12 @@ class Score extends Model
 {
     use HasFactory;
 
+    public $fillable = [
+        'user_code',
+        'course_code',
+        'point',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_code', 'code');

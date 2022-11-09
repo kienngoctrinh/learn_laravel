@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRoleEnum;
+use App\Http\Requests\Score\StoreRequest;
 use App\Models\Course;
 use App\Models\Score;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -65,22 +67,27 @@ class ScoreController extends Controller
     public function create()
     {
         $courses = Course::query()
-            ->get();
+            ->get()->unique('name');
 
         return view('scores.create', [
             'courses' => $courses,
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreScoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreScoreRequest $request)
+    public function store(StoreRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->model->create($request->validated());
+
+            DB::commit();
+
+            return redirect()->route('scores.index')->with('success', 'Score created successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**

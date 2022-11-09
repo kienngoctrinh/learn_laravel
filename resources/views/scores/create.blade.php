@@ -8,19 +8,22 @@
                         @csrf
                         <div class="form-group">
                             <label>Student ID</label>
-                            <input type="text" name="user_code" class="form-control">
+                            <input type="text" name="user_code" class="form-control" value="{{ old('user_code') }}">
                         </div>
                         <div class="form-group">
                             <label>Course</label>
                             <select name="course_code" class="form-control">
                                 @foreach($courses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                    <option hidden>Choose course</option>
+                                    <option value="{{ $course->code }}" {{ old('course_code') == $course->code ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Point</label>
-                            <input type="number" name="point" class="form-control">
+                            <input type="text" name="point" class="form-control" value="{{ old('point') }}">
                         </div>
                         <button class="btn btn-primary">Create</button>
                     </form>
