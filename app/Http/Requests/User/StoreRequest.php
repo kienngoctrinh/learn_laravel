@@ -8,7 +8,7 @@ class StoreRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return auth();
     }
 
     public function rules()
@@ -59,6 +59,7 @@ class StoreRequest extends FormRequest
             'avatar'   => [
                 'image',
                 'max:2048',
+                'nullable',
             ],
         ];
     }

@@ -28,7 +28,7 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->code }}</td>
                         <td class="table-user">
-                            <img src="{{ asset('avatars/' . $user->avatar) }}" alt="table-user" class="mr-2 rounded-circle">
+                            <img src="{{ asset('avatars/' . ($user->avatar ?? 'default.png')) }}" alt="table-user" class="mr-2 rounded-circle">
                             {{ $user->name }}
                         </td>
                         <td>{{ $user->email }}</td>

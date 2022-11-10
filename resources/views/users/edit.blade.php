@@ -47,7 +47,7 @@
                             <input type="file" name="avatar" id="example-fileinput" class="form-control-file">
                         </div>
                         <div class="form-group mb-3">
-                            <img style="object-fit: cover" src="{{ asset('avatars/' . $user->avatar) }}" id="image-preview" class="avatar-xl rounded-circle">
+                            <img style="object-fit: cover" src="{{ asset('avatars/' . ($user->avatar ?? 'default.png')) }}" id="image-preview" class="avatar-xl rounded-circle">
                             <i id="image-remove" class="dripicons-cross"></i>
                         </div>
                         <button class="btn btn-primary">Update</button>

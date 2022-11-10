@@ -51,10 +51,6 @@ class UserController extends Controller
             $arr = $request->validated();
             $arr['password'] = Hash::make($arr['password']);
 
-            if (!$request->hasFile('avatar')) {
-                $arr['avatar'] = 'default.png';
-            }
-
             if ($request->hasFile('avatar')) {
                 $imageName = uniqid() . time() . '.' . $request->avatar->extension();
                 $request->avatar->move(public_path('avatars'), $imageName);
@@ -110,10 +106,10 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(User $user)
+    public function destroy($userId)
     {
-        $user->delete();
+        User::destroy($userId);
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->back()->with('success', 'User deleted successfully');
     }
 }

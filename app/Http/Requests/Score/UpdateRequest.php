@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Score;
 
+use App\Models\Score;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,18 +16,6 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_code' => [
-                'filled',
-                'required',
-                'string',
-                Rule::exists('users', 'code'),
-                'unique:App\Models\Score,user_code',
-            ],
-            'course_code' => [
-                'filled',
-                'required',
-                Rule::exists('courses', 'code'),
-            ],
             'point' => [
                 'filled',
                 'required',

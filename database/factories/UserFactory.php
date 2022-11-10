@@ -16,7 +16,6 @@ class UserFactory extends Factory
             'role'              => $this->faker->randomElement([1]),
             'gender'            => $this->faker->randomElement(['Male', 'Female']),
             'birthday'          => $this->faker->dateTimeBetween('-30 year', '-18 year'),
-            'avatar'            => $this->faker->imageUrl,
         ];
     }
 }

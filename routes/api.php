@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiScoreController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -9,3 +10,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::get('/scores', [ApiScoreController::class, 'index']);

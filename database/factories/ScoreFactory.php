@@ -12,7 +12,7 @@ class ScoreFactory extends Factory
     {
         return [
             'user_code'   => User::query()->inRandomOrder()->value('code'),
-            'course_code' => Course::query()->inRandomOrder()->value('code'),
+            'course_code' => Course::query()->distinct()->inRandomOrder()->value('code'),
             'point'       => $this->faker->randomFloat(2, 0, 10),
         ];
     }

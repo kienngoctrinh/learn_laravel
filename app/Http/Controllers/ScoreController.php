@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRoleEnum;
 use App\Http\Requests\Score\StoreRequest;
+use App\Http\Requests\Score\UpdateRequest;
 use App\Models\Course;
 use App\Models\Score;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +58,16 @@ class ScoreController extends Controller
         $scores = $this->model
             ->with('user')
             ->with('course')
+            ->whereHas('user', function ($query) use ($search) {
+                $query->where('email', 'like', '%' . $search . '%')
+                    ->orWhere('name', 'like', '%' . $search . '%')
+                    ->orWhere('code', $search);
+            })
+            ->orWhereHas('course', function ($query) use ($search) {
+                $query->where('name', $search);
+            })
+            ->orWhere('point', 'like', '%' . $search . '%')
+            ->orderByDesc('point')
             ->get();
 
         return view('scores.index', [
@@ -66,11 +78,19 @@ class ScoreController extends Controller
 
     public function create()
     {
+        // $users = User::query()
+        //     ->whereNotIn('code', function ($query) {
+        //         $query->select('user_code')
+        //             ->from('scores');
+        //     })
+        //     ->get();
+
         $courses = Course::query()
             ->get()->unique('name');
 
         return view('scores.create', [
             'courses' => $courses,
+            // 'users'   => $users,
         ]);
     }
 
@@ -90,48 +110,39 @@ class ScoreController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Score  $score
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Score $score)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Score  $score
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Score $score)
     {
-        //
+        $courses = Course::query()
+            ->get()->unique('name');
+
+        return view('scores.edit', [
+            'score'   => $score,
+            'courses' => $courses,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateScoreRequest  $request
-     * @param  \App\Models\Score  $score
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateScoreRequest $request, Score $score)
+    public function update(UpdateRequest $request, $scoreId)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $score = $this->model->findOrFail($scoreId);
+            $score->fill($request->validated());
+            $score->save();
+
+            DB::commit();
+
+            return redirect()->route('scores.index')->with('success', 'Score updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Score  $score
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Score $score)
+    public function destroy($scoreId)
     {
-        //
+        Score::destroy($scoreId);
+
+        return redirect()->back()->with('success', 'Score deleted successfully.');
     }
 }

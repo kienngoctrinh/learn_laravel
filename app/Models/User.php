@@ -11,16 +11,6 @@ class User extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function getAgeAttribute()
-    {
-        return date_diff(date_create($this->birthday), date_create())->y;
-    }
-
-    public function getDateAttribute()
-    {
-        return date('Y-m-d', strtotime($this->birthday));
-    }
-
     protected $fillable = [
         'code',
         'email',
@@ -31,4 +21,14 @@ class User extends Model
         'role',
         'avatar',
     ];
+
+    public function getAgeAttribute()
+    {
+        return date_diff(date_create($this->birthday), date_create())->y;
+    }
+
+    public function getDateAttribute()
+    {
+        return date('Y-m-d', strtotime($this->birthday));
+    }
 }

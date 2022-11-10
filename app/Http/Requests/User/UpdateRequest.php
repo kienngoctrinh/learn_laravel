@@ -10,7 +10,7 @@ class UpdateRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return auth();
     }
 
     public function rules()
