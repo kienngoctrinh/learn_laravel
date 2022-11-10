@@ -5,13 +5,22 @@ use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
-Route::get('login', [AuthController::class, 'login'])->name('login');
-Route::post('login', [AuthController::class, 'processLogin'])->name('process_login');
+Route::get('/auth/redirect/{provider}', function ($provider) {
+    return Socialite::driver($provider)->redirect();
+})->name('auth.redirect');
+
+Route::get('/auth/callback/{provider}', [AuthController::class, 'callback'])->name('auth.callback');
+
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'registering'])->name('registering');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'processLogin'])->name('process_login');
 Route::group([
     'middleware' => CheckLoginMiddleware::class
 ], function () {
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {
         return view('layout.master');
     })->name('welcome');

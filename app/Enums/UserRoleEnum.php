@@ -8,7 +8,7 @@ final class UserRoleEnum extends Enum
 {
     public const STUDENT = 1;
 
-    public static function getArrayView(): array
+    public static function getArrayView()
     {
         return [
             'Student'  => self::STUDENT,
