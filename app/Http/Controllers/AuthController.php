@@ -36,12 +36,12 @@ class AuthController extends Controller
             }
 
             session()->put('name', $user->name);
-            session()->put('role', $user->role);
             session()->put('avatar', $user->avatar);
+            session()->put('role', $user->role);
 
             return redirect()->route('welcome');
         } catch (\Throwable $e) {
-            return redirect()->route('login')->with('error', 'Login failed');
+            return redirect()->route('login')->with('error', 'Email or password is incorrect');
         }
     }
 

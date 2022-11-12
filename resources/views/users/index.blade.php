@@ -2,6 +2,17 @@
 @section('content')
     <div class="card">
         <div class="card-header">
+            <div class="app-search dropdown d-none d-lg-block">
+                <form class="float-right">
+                    <div class="input-group">
+                        <input type="text" name="q" value="{{ $search }}" class="form-control dropdown-toggle"
+                               placeholder="Search..." id="top-search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary mdi mdi-magnify search-icon" type="submit"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <a href="{{ route('users.create') }}" class="btn btn-success">
                 Create
             </a>

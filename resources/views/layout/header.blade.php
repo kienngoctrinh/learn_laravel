@@ -14,7 +14,7 @@
         <li class="dropdown notification-list topbar-dropdown">
             <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
                aria-haspopup="false" aria-expanded="false">
-                <img src="{{ asset('images/flags/us.jpg') }}" alt="user-image" class="mr-0 mr-sm-1" height="12">
+{{--                <img src="{{ asset('images/flags/us.jpg') }}" alt="user-image" class="mr-0 mr-sm-1" height="12">--}}
                 <span class="align-middle d-none d-sm-inline-block">English</span>
             </a>
         </li>
@@ -203,13 +203,10 @@
                          class="rounded-circle">
                 </span>
                 <span>
-                    <span class="account-user-name">Dominic Keller</span>
-                    <span class="account-position">Founder</span>
-{{--                    <span class="account-user-name">{{ auth()->user()->name }}</span>--}}
-{{--                    <span class="account-position">{{ auth()->user()->role }}</span>--}}
-{{--                    @foreach($roles as $role => $value)--}}
-{{--                        <span class="account-position">{{ $role }}</span>--}}
-{{--                    @endforeach--}}
+                    <span class="account-user-name">{{ session()->get('name') }}</span>
+                    @foreach($roles as $role => $value)
+                        <span class="account-position">{{ $role }}</span>
+                    @endforeach
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">

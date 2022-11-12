@@ -6,6 +6,7 @@ use App\Enums\UserRoleEnum;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -30,12 +31,20 @@ class UserController extends Controller
         View::share('roles', $roles);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->model->get();
+        $search = $request->get('q');
+
+        $users = $this->model
+            ->where('email', 'like', '%' . $search . '%')
+            ->orWhere('code', $search)
+            ->orWhere('name', 'like', '%' . $search . '%')
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('users.index', [
             'users' => $users,
+            'search' => $search,
         ]);
     }
 
@@ -49,13 +58,14 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $arr = $request->validated();
-            $arr['password'] = Hash::make($arr['password']);
 
             if ($request->hasFile('avatar')) {
                 $imageName = uniqid() . time() . '.' . $request->avatar->extension();
                 $request->avatar->move(public_path('avatars'), $imageName);
                 $arr['avatar'] = $imageName;
             }
+
+            $arr['password'] = Hash::make($arr['password']);
 
             $this->model->create($arr);
 

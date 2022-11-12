@@ -25,7 +25,6 @@ class ScoreController extends Controller
         $arr       = explode('.', $routeName);
         $arr       = array_map('ucwords', $arr);
         $title     = implode(' - ', $arr);
-
         $roles = UserRoleEnum::getArrayView();
 
         View::share('title', $title);

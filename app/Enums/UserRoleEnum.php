@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types = 1);
 
 namespace App\Enums;
 
@@ -11,7 +12,7 @@ final class UserRoleEnum extends Enum
     public static function getArrayView()
     {
         return [
-            'Student'  => self::STUDENT,
+            'Student' => self::STUDENT,
         ];
     }
 }

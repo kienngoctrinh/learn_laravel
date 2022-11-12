@@ -48,14 +48,12 @@
                     <form id="form-login" action="{{ route('process_login') }}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="emailaddress">Email address</label>
-                            <input class="form-control" type="email" name="email" id="emailaddress" required="" placeholder="Enter your email">
+                            <label>Email address</label>
+                            <input class="form-control" type="email" name="email">
                         </div>
                         <div class="form-group">
-                            <a href="pages-recoverpw-2.html" class="text-muted float-right"><small>Forgot your
-                                    password?</small></a>
-                            <label for="password">Password</label>
-                            <input class="form-control" type="password" name="password" required="" id="password" placeholder="Enter your password">
+                            <label>Password</label>
+                            <input class="form-control" type="password" name="password">
                         </div>
                         <div class="form-group mb-3">
                             <div class="custom-control custom-checkbox">
